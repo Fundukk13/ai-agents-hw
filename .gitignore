@@ -1,0 +1,11 @@
+.gradle/
+.kotlin/
+build/
+.runs/
+.env
+.idea/
+*.iml
+__pycache__/
+agent.db
+agent.db-wal
+agent.db-shm

@@ -1,0 +1,6 @@
+{
+  "modelRequests": 30,
+  "toolCalls": 100,
+  "sideEffects": 20,
+  "resultBytes": 1048576
+}

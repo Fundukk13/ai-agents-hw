@@ -1,0 +1,13 @@
+{
+  "commands": {
+    "allow": ["python3 -B -m unittest -v"],
+    "deny": ["rm -rf .", "bash -c whoami"]
+  },
+  "directories": {
+    "allow": ["."],
+    "deny": ["private"]
+  },
+  "bashTimeoutMillis": 10000,
+  "maxOutputBytes": 65536,
+  "maxFileBytes": 1048576
+}
