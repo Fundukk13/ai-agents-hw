@@ -21,6 +21,7 @@ import edu.hse.agent.policy.Policy
 import edu.hse.agent.serialization.json
 import edu.hse.agent.storage.RunRepository
 import edu.hse.agent.tasks.TaskManager
+import edu.hse.agent.texts.Prompts
 import edu.hse.agent.tools.Schemas
 import edu.hse.agent.tools.ToolExecutor
 import edu.hse.agent.tools.failure
@@ -61,31 +62,9 @@ class AgentLoop(
                 tasksEnabled = tasksEnabled,
                 phase = if (plan || tasksEnabled) Phase.PLAN else Phase.EXECUTE,
             )
-        val phaseInstruction =
-            if (plan || tasksEnabled) {
-                "Start in Plan Mode: only read tools are allowed. " +
-                    "Use submit_plan with goal, steps, tools, risks, assumptions and done_when; await approval."
-            } else {
-                "Start execution now."
-            }
-        state.messages +=
-            Message(
-                "system",
-                """You are a console coding agent. Use tools to inspect and change the project, then verify with Bash.
-            |All file paths and cwd are relative to workspace. Never change tests unless the user's task explicitly requires it.
-            |Tool calls are checked by runtime; an error is data, choose a different step or explain why you cannot proceed.
-            |Finish with a factual text answer. Do not claim tests passed unless a tool result proves it.
-            |$phaseInstruction
-            |Allowed Bash commands: ${policy.config.commands.allow}. Denied directories: ${policy.config.directories.deny}.
-                """.trimMargin(),
-            )
-        if (tasksEnabled) {
-            state.messages +=
-                Message(
-                    "system",
-                    "Task Mode: submit_plan steps must include id, depends_on, tools and verification_tool. Execution is scheduled by runtime. Every task requires complete_task(task_id, call_id) with successful verification evidence. Do not complete tasks by text claims.",
-                )
-        }
+        val phaseInstruction = if (plan || tasksEnabled) Prompts.planning else Prompts.execution
+        state.messages += Message("system", Prompts.system(phaseInstruction, policy.config.commands.allow, policy.config.directories.deny))
+        if (tasksEnabled) state.messages += Message("system", Prompts.taskMode)
         state.messages += Message("user", task)
         store.locked(state.runId) { store.save(state) }
         onCreated(state)
@@ -131,13 +110,13 @@ class AgentLoop(
             state.decisions += Decision("plan", id, if (approve) "approve" else "reject", reason)
             if (approve) {
                 state.phase = Phase.EXECUTE
-                state.messages += Message("user", "Plan approved. Execute it now.")
+                state.messages += Message("user", Prompts.planApproved)
             } else {
                 state.plan = null
                 state.tasks.clear()
                 state.currentTaskId = null
                 state.taskFinalRequested = false
-                state.messages += Message("user", "Plan rejected: $reason. Revise the plan or explain why you cannot proceed.")
+                state.messages += Message("user", Prompts.planRejected(reason))
             }
             state.status = RunStatus.RUNNING
             store.save(state)

@@ -1,0 +1,1 @@
+Plan rejected: {{reason}}. Revise the plan or explain why you cannot proceed.

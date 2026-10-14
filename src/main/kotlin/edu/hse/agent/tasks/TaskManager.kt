@@ -9,6 +9,7 @@ import edu.hse.agent.models.TaskStatus
 import edu.hse.agent.models.ToolCall
 import edu.hse.agent.serialization.json
 import edu.hse.agent.serialization.string
+import edu.hse.agent.texts.Prompts
 import edu.hse.agent.tools.ToolRegistry
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.booleanOrNull
@@ -62,7 +63,7 @@ class TaskManager {
         if (task == null) {
             require(state.tasks.all { it.status == TaskStatus.COMPLETED }) { "No task with successful dependencies is available" }
             if (!state.taskFinalRequested) {
-                state.messages += Message("user", "All tasks completed with runtime evidence. Return the final answer without tools.")
+                state.messages += Message("user", Prompts.tasksCompleted)
                 state.taskFinalRequested = true
             }
             return
@@ -72,8 +73,7 @@ class TaskManager {
         state.messages +=
             Message(
                 "user",
-                "Current task: " + json.encodeToString(task) +
-                    ". Execute only its allowed tools. Complete it with complete_task referencing its successful verification call.",
+                Prompts.currentTask(json.encodeToString(task)),
             )
     }
 

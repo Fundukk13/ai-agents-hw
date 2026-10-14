@@ -1,0 +1,1 @@
+Current task: {{task_json}}. Execute only its allowed tools. Complete it with complete_task referencing its successful verification call.

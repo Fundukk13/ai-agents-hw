@@ -4,6 +4,7 @@ import edu.hse.agent.models.CheckedAction
 import edu.hse.agent.models.ToolDefinition
 import edu.hse.agent.policy.Policy
 import edu.hse.agent.serialization.string
+import edu.hse.agent.texts.Prompts
 import edu.hse.agent.tools.Tool
 import edu.hse.agent.tools.objectSchema
 import edu.hse.agent.tools.success
@@ -16,7 +17,7 @@ class DeleteFileTool : Tool {
     override val definition =
         ToolDefinition(
             "delete_file",
-            "Delete one regular workspace file. Always requires user confirmation.",
+            Prompts.toolDescription("delete_file"),
             objectSchema("path" to textSchema()),
             false,
         )

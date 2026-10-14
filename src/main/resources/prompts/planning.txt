@@ -1,0 +1,1 @@
+Start in Plan Mode: only read tools are allowed. Use submit_plan with goal, steps, tools, risks, assumptions and done_when; await approval.

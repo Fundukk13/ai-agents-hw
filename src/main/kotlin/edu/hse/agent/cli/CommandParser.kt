@@ -11,11 +11,8 @@ import edu.hse.agent.cli.commands.ShowCommand
 import edu.hse.agent.cli.commands.StartCommand
 import edu.hse.agent.cli.commands.TasksCommand
 import edu.hse.agent.models.Mode
+import edu.hse.agent.texts.Prompts
 import java.nio.file.Path
-
-private const val DEFAULT_TASK =
-    "Исправь расчёт итоговой стоимости заказа, чтобы тесты проходили. Тесты не меняй. " +
-        "Сам найди нужные файлы, внеси исправление и запусти тесты."
 
 class CommandParser {
     fun parse(args: Array<String>): Command {
@@ -85,7 +82,7 @@ class CommandParser {
             Path.of(input.options["policy"] ?: "policy.json"),
             directory,
             mode,
-            input.options["task"] ?: DEFAULT_TASK,
+            input.options["task"] ?: Prompts.defaultTask,
             "plan" in input.options,
             crashAfter,
             input.options["budget"]?.let(Path::of),

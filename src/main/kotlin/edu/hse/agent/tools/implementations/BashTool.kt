@@ -3,6 +3,7 @@ package edu.hse.agent.tools.implementations
 import edu.hse.agent.models.CheckedAction
 import edu.hse.agent.models.ToolDefinition
 import edu.hse.agent.policy.Policy
+import edu.hse.agent.texts.Prompts
 import edu.hse.agent.tools.Tool
 import edu.hse.agent.tools.objectSchema
 import edu.hse.agent.tools.success
@@ -20,7 +21,7 @@ class BashTool : Tool {
     override val definition =
         ToolDefinition(
             "Bash",
-            "Run an exact policy-approved simple command in a workspace-relative cwd.",
+            Prompts.toolDescription("Bash"),
             objectSchema("command" to textSchema(), "cwd" to textSchema()),
         )
 

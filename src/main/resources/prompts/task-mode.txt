@@ -1,0 +1,1 @@
+Task Mode: submit_plan steps must include id, depends_on, tools and verification_tool. Execution is scheduled by runtime. Every task requires complete_task(task_id, call_id) with successful verification evidence. Do not complete tasks by text claims.

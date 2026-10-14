@@ -1,0 +1,10 @@
+{
+  "list_files": "List direct children of a workspace directory; paths are workspace-relative.",
+  "read_file": "Read a UTF-8 workspace file.",
+  "write_file": "Create or replace a UTF-8 workspace file.",
+  "delete_file": "Delete one regular workspace file. Always requires user confirmation.",
+  "Bash": "Run an exact policy-approved simple command in a workspace-relative cwd.",
+  "complete_task": "Complete current task with runtime-verified evidence from its saved tool call; call this alone.",
+  "submit_plan": "Submit the structured plan and stop for explicit user approval.",
+  "submit_tasks": "Submit tasks with dependencies and required verification tools; wait for explicit approval."
+}

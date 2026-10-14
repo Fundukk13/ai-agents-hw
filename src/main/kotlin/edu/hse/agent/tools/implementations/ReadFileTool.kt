@@ -3,6 +3,7 @@ package edu.hse.agent.tools.implementations
 import edu.hse.agent.models.CheckedAction
 import edu.hse.agent.models.ToolDefinition
 import edu.hse.agent.policy.Policy
+import edu.hse.agent.texts.Prompts
 import edu.hse.agent.tools.Tool
 import edu.hse.agent.tools.objectSchema
 import edu.hse.agent.tools.success
@@ -12,7 +13,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import java.nio.file.Files
 
 class ReadFileTool : Tool {
-    override val definition = ToolDefinition("read_file", "Read a UTF-8 workspace file.", objectSchema("path" to textSchema()), true)
+    override val definition = ToolDefinition("read_file", Prompts.toolDescription("read_file"), objectSchema("path" to textSchema()), true)
 
     override fun execute(
         arguments: JsonObject,

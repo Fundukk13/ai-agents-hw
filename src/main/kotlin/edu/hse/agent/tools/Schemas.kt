@@ -4,6 +4,7 @@ import edu.hse.agent.models.ToolCall
 import edu.hse.agent.models.ToolDefinition
 import edu.hse.agent.serialization.json
 import edu.hse.agent.serialization.string
+import edu.hse.agent.texts.Prompts
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -19,12 +20,12 @@ object Schemas {
             listOf(
                 ToolDefinition(
                     "complete_task",
-                    "Complete current task with runtime-verified evidence from its saved tool call; call this alone.",
+                    Prompts.toolDescription("complete_task"),
                     objectSchema("task_id" to textSchema(), "call_id" to textSchema()),
                 ),
                 ToolDefinition(
                     "submit_plan",
-                    "Submit the structured plan and stop for explicit user approval.",
+                    Prompts.toolDescription("submit_plan"),
                     objectSchema(
                         "goal" to textSchema(),
                         "steps" to arraySchema(objectSchema("description" to textSchema(), "tools" to arraySchema(textSchema()))),
@@ -38,7 +39,7 @@ object Schemas {
     val taskPlan =
         ToolDefinition(
             "submit_plan",
-            "Submit tasks with dependencies and required verification tools; wait for explicit approval.",
+            Prompts.toolDescription("submit_tasks"),
             objectSchema(
                 "goal" to textSchema(),
                 "steps" to
